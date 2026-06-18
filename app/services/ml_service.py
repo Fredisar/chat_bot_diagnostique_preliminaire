@@ -1,30 +1,20 @@
 # app/services/ml_service.py
 from app.models.disease_model import DiseasePredictor
+from app.services.translations import translate_disease, translate_symptoms
 import logging
 import os
 
 logger = logging.getLogger(__name__)
 
-# 1. Créer une instance globale du prédicteur
-# Cette instance sera partagée par toute l'application
 predictor = DiseasePredictor()
 model_loaded = False
 
 def initialize_model():
-    """
-    Initialiser le modèle au démarrage de l'application.
-    
-    C'est appelé dans app/__init__.py
-    
-    Fonctionnement :
-    1. Essayer de charger un modèle sauvegardé
-    2. Si ça échoue, entraîner un nouveau modèle
-    """
+    """Initialiser le modèle au démarrage de l'application."""
     global model_loaded
     
     logger.info("🔄 Initialisation du modèle de prédiction...")
     
-    # Étape 1 : Essayer de charger le modèle existant
     model_path = 'models/disease_model.joblib'
     
     if os.path.exists(model_path):
@@ -38,7 +28,6 @@ def initialize_model():
         except Exception as e:
             logger.warning(f"⚠️ Erreur lors du chargement : {e}")
     
-    # Étape 2 : Si pas de modèle, en entraîner un nouveau
     logger.info("🆕 Aucun modèle trouvé - Entraînement en cours...")
     
     dataset_path = 'data/training_cleaned.csv'
@@ -47,7 +36,6 @@ def initialize_model():
         return False
     
     try:
-        # Lancer le pipeline d'entraînement
         results = predictor.train_pipeline(dataset_path)
         model_loaded = True
         logger.info(f"✅ Modèle entraîné avec précision : {results['accuracy']*100:.2f}%")
@@ -58,19 +46,10 @@ def initialize_model():
 
 def predict_disease(symptoms):
     """
-    Prédire la maladie à partir des symptômes.
-    
-    Cette fonction est appelée par la route Flask.
-    
-    Args:
-        symptoms (list): Liste des symptômes détectés
-        
-    Returns:
-        dict: Résultat de la prédiction
+    Prédire la maladie à partir des symptômes avec traduction en français.
     """
     global model_loaded
     
-    # Vérifier que le modèle est disponible
     if not model_loaded:
         logger.warning("⚠️ Le modèle n'est pas initialisé - tentative d'initialisation")
         if not initialize_model():
@@ -79,7 +58,6 @@ def predict_disease(symptoms):
                 'error': 'Le modèle n\'est pas disponible'
             }
     
-    # Vérifier qu'il y a des symptômes
     if not symptoms:
         return {
             'success': False,
@@ -91,13 +69,27 @@ def predict_disease(symptoms):
         # Faire la prédiction
         prediction = predictor.predict_disease(symptoms)
         
-        # Formater le résultat
+        # Traduire le nom de la maladie
+        disease_fr = translate_disease(prediction['disease'])
+        
+        # Traduire les symptômes
+        symptoms_fr = translate_symptoms(symptoms)
+        
+        # Traduire les top 3
+        top_3_translated = []
+        for item in prediction['top_3']:
+            top_3_translated.append({
+                'disease': translate_disease(item['disease']),
+                'confidence': item['confidence']
+            })
+        
         return {
             'success': True,
-            'disease': prediction['disease'],
+            'disease': disease_fr,
+            'disease_en': prediction['disease'],  # Garder l'original pour référence
             'confidence': prediction['confidence'],
-            'top_3': prediction['top_3'],
-            'symptoms_detected': symptoms
+            'top_3': top_3_translated,
+            'symptoms_detected': symptoms_fr
         }
     
     except Exception as e:
@@ -108,25 +100,16 @@ def predict_disease(symptoms):
         }
 
 def get_model_info():
-    """
-    Obtenir des informations sur le modèle chargé.
-    
-    Utile pour déboguer et comprendre le modèle.
-    
-    Returns:
-        dict: Informations sur le modèle
-    """
+    """Obtenir des informations sur le modèle chargé."""
     if not model_loaded or not predictor.is_trained:
         return {
             'is_loaded': False,
             'message': 'Le modèle n\'est pas chargé'
         }
     
-    # Compter le nombre de symptômes et maladies
     n_symptoms = len(predictor.symptom_columns) if predictor.symptom_columns else 0
     n_diseases = len(predictor.disease_classes) if predictor.disease_classes else 0
     
-    # Obtenir les 10 symptômes les plus importants
     top_features = []
     if predictor.feature_importance is not None:
         top_features = predictor.feature_importance.head(10).to_dict('records')

@@ -1,0 +1,192 @@
+/* app/static/css/theme.css */
+
+/* ===== VARIABLES ===== */
+:root {
+    /* Couleurs claires */
+    --bg-primary: #f0f2f5;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --bg-input: #f5f7fa;
+    --bg-hover: #f0f0f0;
+    
+    --text-primary: #1a1a2e;
+    --text-secondary: #4a4a6a;
+    --text-muted: #8888aa;
+    
+    --border-color: #e8e8f0;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    
+    --message-bot: #ffffff;
+    --message-user: #667eea;
+    --message-user-text: #ffffff;
+    
+    --gradient-start: #667eea;
+    --gradient-end: #764ba2;
+}
+
+/* ===== MODE SOMBRE ===== */
+[data-theme="dark"] {
+    --bg-primary: #0a0a1a;
+    --bg-secondary: #141428;
+    --bg-card: #1a1a30;
+    --bg-input: #252540;
+    --bg-hover: #2a2a45;
+    
+    --text-primary: #e8e8f0;
+    --text-secondary: #a8a8c8;
+    --text-muted: #666688;
+    
+    --border-color: #2a2a45;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    
+    --message-bot: #1a1a30;
+    --message-user: #667eea;
+    --message-user-text: #ffffff;
+    
+    --gradient-start: #4a5fc0;
+    --gradient-end: #5a3a82;
+}
+
+/* ===== APPLICATIONS ===== */
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.navbar {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.nav-link {
+    color: var(--text-secondary);
+}
+
+.nav-link:hover {
+    color: var(--text-primary);
+}
+
+/* Cartes */
+.chat-container,
+.profile-card,
+.stat-card,
+.history-list,
+.auth-card {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+    box-shadow: 0 4px 20px var(--shadow-color);
+}
+
+/* Messages */
+.bot-message {
+    background: var(--message-bot);
+    color: var(--text-primary);
+}
+
+.user-message {
+    background: var(--message-user);
+    color: var(--message-user-text);
+}
+
+/* Inputs */
+.chat-input input,
+.auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="password"] {
+    background: var(--bg-input);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.chat-input input:focus,
+.auth-form input:focus {
+    border-color: var(--gradient-start);
+}
+
+/* Hero section */
+.hero-section {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+}
+
+/* Statistiques */
+.stat-box,
+.stat-card {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+/* Historique */
+.history-item {
+    border-color: var(--border-color);
+}
+
+.history-item:hover {
+    background: var(--bg-hover);
+}
+
+/* Flash messages */
+.flash {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+/* Dropdown */
+.nav-dropdown-content {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    box-shadow: 0 4px 20px var(--shadow-color);
+}
+
+.nav-dropdown-content a {
+    color: var(--text-secondary);
+}
+
+.nav-dropdown-content a:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+/* Footer */
+.footer {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-muted);
+}
+
+/* Scrollbar */
+.chat-messages::-webkit-scrollbar-track {
+    background: var(--bg-input);
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+}
+
+/* Theme toggle */
+.theme-toggle {
+    background: var(--bg-input);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .theme-toggle {
+        width: 34px;
+        height: 34px;
+    }
+}
