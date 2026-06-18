@@ -1,0 +1,219 @@
+<!-- app/templates/profile.html -->
+{% extends "base.html" %}
+
+{% block title %}Profil - MedBot{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <h1><i class="fas fa-user-circle"></i> Mon Profil</h1>
+        <p>Gérez vos informations personnelles</p>
+    </div>
+    
+    <div class="profile-grid">
+        <!-- Carte d'informations -->
+        <div class="profile-card">
+            <h2>Informations personnelles</h2>
+            <div class="profile-info">
+                <div class="info-item">
+                    <span class="label">Nom d'utilisateur</span>
+                    <span class="value">{{ user.username }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Email</span>
+                    <span class="value">{{ user.email }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Membre depuis</span>
+                    <span class="value">{{ user.created_at.strftime('%d/%m/%Y à %H:%M') if user.created_at else '-' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Dernière connexion</span>
+                    <span class="value">{{ user.last_login.strftime('%d/%m/%Y à %H:%M') if user.last_login else '-' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Statut</span>
+                    <span class="value">
+                        {% if user.is_active %}
+                            <span class="badge badge-success">Actif</span>
+                        {% else %}
+                            <span class="badge badge-danger">Inactif</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Total consultations</span>
+                    <span class="value">{{ stats.total_queries }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Carte des statistiques -->
+        <div class="profile-card">
+            <h2>Statistiques</h2>
+            
+            <div class="stat-item">
+                <span class="stat-label">Consultations totales</span>
+                <span class="stat-number">{{ stats.total_queries }}</span>
+            </div>
+            
+            {% if stats.top_diseases %}
+                <h3 style="margin-top: 1.5rem; font-size: 1rem;">Top maladies</h3>
+                {% for disease in stats.top_diseases %}
+                <div class="stat-item">
+                    <span class="stat-label">{{ disease._id }}</span>
+                    <span class="stat-number">{{ disease.count }}</span>
+                </div>
+                {% endfor %}
+            {% endif %}
+            
+            <div style="margin-top: 1.5rem;">
+                <a href="{{ url_for('dashboard.history') }}" class="btn-secondary">
+                    <i class="fas fa-history"></i> Voir tout l'historique
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.profile-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.profile-header {
+    margin-bottom: 2rem;
+}
+
+.profile-header h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.profile-header h1 i {
+    color: #667eea;
+    margin-right: 0.5rem;
+}
+
+.profile-header p {
+    color: #666;
+    font-size: 1rem;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid #eef0f2;
+    padding: 1.5rem;
+}
+
+.profile-card h2 {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.profile-info .info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.profile-info .info-item:last-child {
+    border-bottom: none;
+}
+
+.profile-info .label {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.profile-info .value {
+    font-weight: 500;
+    color: #333;
+}
+
+.badge {
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.badge-success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.badge-danger {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    color: #666;
+}
+
+.stat-number {
+    font-weight: 600;
+    color: #667eea;
+}
+
+.btn-secondary {
+    display: inline-block;
+    padding: 0.5rem 1.25rem;
+    background: #f5f7fa;
+    color: #333;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+    background: #e8ecf1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-info .info-item {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-header h1 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+{% endblock %}

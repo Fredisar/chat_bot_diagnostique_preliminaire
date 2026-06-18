@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Tableau de bord - MedBot{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <div>
+            <h1>👋 Bonjour, {{ user.username }}</h1>
+            <p class="subtitle">Bienvenue sur votre tableau de bord personnel</p>
+        </div>
+        <a href="{{ url_for('main.index') }}" class="btn-primary">
+            <i class="fas fa-comment-dots"></i> Nouvelle consultation
+        </a>
+    </div>
+    
+    <!-- Statistiques -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="number">{{ stats.total_queries }}</div>
+            <div class="label">Consultations totales</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">{{ history|length }}</div>
+            <div class="label">Dernières consultations</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">{{ user.created_at.strftime('%d/%m/%Y') if user.created_at else '-' }}</div>
+            <div class="label">Membre depuis</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">{{ user.last_login.strftime('%d/%m/%Y') if user.last_login else '-' }}</div>
+            <div class="label">Dernière connexion</div>
+        </div>
+    </div>
+    
+    <!-- Top maladies -->
+    {% if stats.top_diseases %}
+    <div class="top-diseases">
+        <h2>📊 Vos diagnostics les plus fréquents</h2>
+        {% for disease in stats.top_diseases %}
+        <div class="disease-bar">
+            <span class="name">{{ disease._id }}</span>
+            <div class="bar">
+                <div class="fill" style="width: {{ (disease.count / stats.top_diseases[0].count) * 100 }}%"></div>
+            </div>
+            <span class="count">{{ disease.count }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <!-- Historique récent -->
+    <div class="history-section">
+        <h2>📋 Dernières consultations</h2>
+        {% if history %}
+            {% for entry in history %}
+            <div class="history-item">
+                <div class="message">
+                    <strong>{{ entry.message[:50] }}{% if entry.message|length > 50 %}...{% endif %}</strong>
+                    <span style="color:#999; font-size:0.85rem; display:block; margin-top:2px;">
+                        Symptômes: {{ entry.symptoms|join(', ') if entry.symptoms else 'Non détectés' }}
+                    </span>
+                </div>
+                <div class="prediction">{{ entry.prediction }}</div>
+                <div class="date">{{ entry.timestamp.strftime('%d/%m/%Y %H:%M') if entry.timestamp else '' }}</div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p style="color:#999; text-align:center; padding:2rem;">
+                Aucune consultation pour le moment. 
+                <a href="{{ url_for('main.index') }}">Commencez à discuter avec le chatbot</a>
+            </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Chatbot Médical{% endblock %}</title>
+    
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Barre de navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('main.index') }}" class="nav-brand">
+                <i class="fas fa-robot"></i>
+                MedBot
+            </a>
+            
+            <div class="nav-menu">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('dashboard.index') }}" class="nav-link">
+                        <i class="fas fa-chart-line"></i> Tableau de bord
+                    </a>
+                    <a href="{{ url_for('main.index') }}" class="nav-link">
+                        <i class="fas fa-comment-dots"></i> Chat
+                    </a>
+                    <div class="nav-dropdown">
+                        <button class="nav-dropdown-btn">
+                            <i class="fas fa-user-circle"></i>
+                            {{ current_user.username }}
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="nav-dropdown-content">
+                            <a href="{{ url_for('auth.profile') }}">
+                                <i class="fas fa-user"></i> Profil
+                            </a>
+                            <a href="{{ url_for('dashboard.history') }}">
+                                <i class="fas fa-history"></i> Historique
+                            </a>
+                            <hr>
+                            <a href="{{ url_for('auth.logout') }}" class="text-danger">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i> Connexion
+                    </a>
+                    <a href="{{ url_for('auth.register') }}" class="nav-link btn-primary">
+                        <i class="fas fa-user-plus"></i> Inscription
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Messages flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash flash-{{ category }}">
+                        {{ message }}
+                        <button class="flash-close" onclick="this.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <!-- Contenu principal -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 MedBot - Chatbot Médical</p>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

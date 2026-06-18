@@ -1,0 +1,82 @@
+<!-- app/templates/index.html -->
+{% extends "base.html" %}
+
+{% block title %}Accueil - MedBot{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <!-- Section Hero -->
+    <section class="hero-section">
+        <h1>🏥 Assistant Médical Intelligent</h1>
+        <p class="subtitle">Décrivez vos symptômes et obtenez une évaluation préliminaire</p>
+        
+        <div class="hero-actions">
+            <a href="#chat-section" class="btn-hero-primary">
+                <i class="fas fa-comment-dots"></i> Démarrer une consultation
+            </a>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard.index') }}" class="btn-hero-secondary">
+                    <i class="fas fa-chart-line"></i> Tableau de bord
+                </a>
+            {% endif %}
+        </div>
+    </section>
+    
+    <!-- Section Chat -->
+    <section id="chat-section" class="chat-section">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2><i class="fas fa-robot"></i> Chatbot Médical</h2>
+                {% if current_user.is_authenticated %}
+                    <span class="user-badge">
+                        <i class="fas fa-user-circle"></i> {{ current_user.username }}
+                    </span>
+                {% else %}
+                    <span class="user-badge guest">
+                        <i class="fas fa-user"></i> Invité
+                    </span>
+                {% endif %}
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    {% if current_user.is_authenticated %}
+                        Bonjour <strong>{{ current_user.username }}</strong> ! 👋<br>
+                        Je suis votre assistant médical. Décrivez-moi vos symptômes pour une évaluation préliminaire.
+                    {% else %}
+                        Bonjour ! 👋<br>
+                        Je suis votre assistant médical. 
+                        <a href="{{ url_for('auth.login') }}">Connectez-vous</a> ou 
+                        <a href="{{ url_for('auth.register') }}">inscrivez-vous</a> 
+                        pour sauvegarder votre historique.
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="chat-input">
+                <input type="text" 
+                       id="userInput" 
+                       placeholder="Ex: J'ai mal à la tête, de la fièvre et je tousse..."
+                       {% if not current_user.is_authenticated %}disabled{% endif %}>
+                <button id="sendButton" 
+                        {% if not current_user.is_authenticated %}disabled{% endif %}>
+                    <i class="fas fa-paper-plane"></i> Envoyer
+                </button>
+            </div>
+            
+            {% if not current_user.is_authenticated %}
+                <div class="chat-login-prompt">
+                    <i class="fas fa-lock"></i>
+                    <a href="{{ url_for('auth.login') }}">Connectez-vous</a> 
+                    ou 
+                    <a href="{{ url_for('auth.register') }}">inscrivez-vous</a> 
+                    pour utiliser le chatbot
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</div>
+
+<!-- Charger le JavaScript du chatbot -->
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+{% endblock %}

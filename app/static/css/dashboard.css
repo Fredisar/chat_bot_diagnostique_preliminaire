@@ -1,0 +1,127 @@
+ .dashboard-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 2rem;
+        color: #333;
+    }
+    
+    .dashboard-header .subtitle {
+        color: #666;
+        font-size: 0.95rem;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        border: 1px solid #eef0f2;
+    }
+    
+    .stat-card .number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #667eea;
+        margin-bottom: 0.25rem;
+    }
+    
+    .stat-card .label {
+        color: #666;
+        font-size: 0.9rem;
+    }
+    
+    .history-section {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        border: 1px solid #eef0f2;
+        padding: 1.5rem;
+    }
+    
+    .history-section h2 {
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
+    }
+    
+    .history-item {
+        padding: 1rem;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .history-item:last-child {
+        border-bottom: none;
+    }
+    
+    .history-item .message {
+        flex: 1;
+    }
+    
+    .history-item .prediction {
+        font-weight: 600;
+        color: #667eea;
+        margin-left: 1rem;
+    }
+    
+    .history-item .date {
+        color: #999;
+        font-size: 0.85rem;
+        margin-left: 1rem;
+    }
+    
+    .top-diseases {
+        margin-bottom: 2rem;
+    }
+    
+    .disease-bar {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    .disease-bar .name {
+        width: 150px;
+        font-size: 0.9rem;
+    }
+    
+    .disease-bar .bar {
+        flex: 1;
+        height: 20px;
+        background: #f0f0f0;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 0 1rem;
+    }
+    
+    .disease-bar .bar .fill {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        border-radius: 10px;
+        transition: width 0.3s;
+    }
+    
+    .disease-bar .count {
+        font-size: 0.9rem;
+        color: #666;
+        min-width: 50px;
+    }

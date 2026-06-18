@@ -1,0 +1,31 @@
+
+RAPPORT D'ANALYSE DES DONNÉES MÉDICALES
+========================================
+
+1. DIMENSIONS DU DATASET
+   - Lignes : 304
+   - Colonnes : 133
+   - Symptômes : 132
+   - Maladies : 41
+
+2. QUALITÉ DES DONNÉES
+   - Valeurs manquantes : 0
+   - Doublons : 4616
+   - Taux de remplissage : 100.00%
+
+3. DISTRIBUTION
+   - Maladie la plus fréquente : Migraine (10 cas)
+   - Maladie la moins fréquente : Acne (5 cas)
+   - Équilibre des classes : Non
+
+4. SYMPTÔMES
+   - Symptôme le plus fréquent : fatigue (134 occurrences)
+   - Symptôme le moins fréquent : fluid_overload (0 occurrences)
+   - Nombre moyen de symptômes par maladie : 7.65
+   - Nombre maximum de symptômes pour une maladie : 17
+   - Nombre minimum de symptômes pour une maladie : 3
+
+5. RECOMMANDATIONS
+   - ✅ Les données sont correctement encodées
+   - ⚠️ Aucun doublon détecté
+   - ✅ Pas de valeurs manquantes
