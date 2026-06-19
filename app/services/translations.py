@@ -1,4 +1,3 @@
-# app/services/translations.py
 """
 Dictionnaire de traduction des maladies de l'anglais vers le français
 """

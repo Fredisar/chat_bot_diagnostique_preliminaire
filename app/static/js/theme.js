@@ -1,5 +1,3 @@
-// app/static/js/theme.js
-
 /**
  * Gestion du thème (clair/sombre)
  */

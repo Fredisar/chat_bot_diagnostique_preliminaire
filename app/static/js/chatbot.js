@@ -1,5 +1,3 @@
-// app/static/js/chatbot.js
-
 /**
  * Envoyer un message au chatbot
  */

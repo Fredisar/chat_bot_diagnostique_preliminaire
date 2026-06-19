@@ -1,4 +1,3 @@
-# app/services/ml_service.py
 from app.models.disease_model import DiseasePredictor
 from app.services.translations import translate_disease, translate_symptoms
 import logging

@@ -1,4 +1,3 @@
-# app/routes/main.py
 from flask import Blueprint, render_template, request, jsonify
 from app import mongo
 from app.services.nlp_service import process_symptoms

@@ -1,4 +1,3 @@
-# app/services/nlp_service.py
 import re
 import nltk
 from nltk.corpus import stopwords
@@ -86,7 +85,7 @@ SYMPTOM_MAPPING = {
     'éruption': 'skin_rash',
     'bouton': 'nodal_skin_eruptions',
     
-    # Ajoutez d'autres mappings selon vos besoins
+    
 }
 
 # 4. Liste des mots de symptômes pour la détection

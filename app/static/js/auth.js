@@ -1,5 +1,3 @@
-// static/js/auth.js
-
 /**
  * Basculer l'affichage du mot de passe
  */

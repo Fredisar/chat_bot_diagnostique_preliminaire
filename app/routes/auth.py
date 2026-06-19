@@ -23,7 +23,7 @@ def login():
         else:
             flash('Identifiants incorrects', 'error')
     
-    return render_template('login.html')  # ⚠️ Ici c'est login.html
+    return render_template('login.html')  
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -43,9 +43,9 @@ def register():
         flash('Inscription réussie !', 'success')
         return redirect(url_for('dashboard.index'))
     
-    return render_template('register.html')  # ✅ Ici c'est register.html
+    return render_template('register.html') 
 
-# app/routes/auth.py - Ajouter cette route
+
 
 @auth_bp.route('/profile')
 @login_required
